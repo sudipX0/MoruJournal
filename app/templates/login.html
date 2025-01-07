@@ -1,0 +1,57 @@
+{% extends "layouts.html" %}
+{% block content %}
+  <div class="bg-white shadow rounded p-6 max-w-lg mx-auto">
+    <form action="" method="post" class="space-y-6">
+      {{ form.hidden_tag() }}
+      <fieldset>
+        <legend class="text-2xl font-bold border-b pb-2 mb-4">Log In</legend>
+      
+        <!-- Email Field -->
+        <div class="mb-4">
+          {{ form.email.label(class="block text-gray-700 font-medium") }}
+          {{ form.email(class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-200") }}
+          {% if form.email.errors %}
+            {% for error in form.email.errors %}
+              <p class="mt-1 text-red-500 text-sm">{{ error }}</p>
+            {% endfor %}
+          {% endif %}
+        </div>
+      
+        <!-- Password Field -->
+        <div class="mb-4">
+          {{ form.password.label(class="block text-gray-700 font-medium") }}
+          {{ form.password(class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-200") }}
+          {% if form.password.errors %}
+            {% for error in form.password.errors %}
+              <p class="mt-1 text-red-500 text-sm">{{ error }}</p>
+            {% endfor %}
+          {% endif %}
+        </div>
+      
+        <!-- Remember Me Field -->
+        <div class="mb-4 flex items-center">
+          {{ form.remember_me() }}
+          <label class="ml-2 text-gray-700">{{ form.remember_me.label }}</label>
+        </div>
+      </fieldset>
+      
+      <!-- Forgot Password Link -->
+      <div class="text-right">
+        <a href="{{ url_for('forgot_password') }}" class="text-sm text-blue-600 hover:underline">Forgot Password?</a>
+      </div>
+      
+      <!-- Submit Button -->
+      <div>
+        {{ form.submit(class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-500") }}
+      </div>
+    </form>
+  </div>
+  <div class="text-center mt-6">
+    <small class="text-gray-600">
+      Don't have an account? 
+      <a href="{{ url_for('register') }}" class="text-blue-600 hover:underline">
+        Sign Up
+      </a>
+    </small>
+  </div>
+{% endblock %}

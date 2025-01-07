@@ -41,7 +41,15 @@ def register():
     return render_template("register.html", title="Register", form=reg_form)
 
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
     login_form = LoginForm()
+    if login_form.validate_on_submit():
+        flash(f"Account logged in successfully !", "Success")
+        return redirect(url_for("main"))
     return render_template("login.html", title="Login", form=login_form)
+
+
+@app.route("/forgot-password")
+def forgot_password():
+    return render_template("forgot_password.html")
