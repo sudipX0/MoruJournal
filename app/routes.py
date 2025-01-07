@@ -1,6 +1,9 @@
 from app import app
-from flask import render_template, url_for, flash, redirect
+from flask import render_template, url_for, flash, redirect, request
 from app.forms import RegistrationForm, LoginForm
+from app import db, bcrypt
+from app.models import User, Post
+from flask_login import login_user, logout_user, current_user, login_required
 
 posts = [
     {
@@ -33,8 +36,18 @@ def about():
 def register():
     reg_form = RegistrationForm()
     if reg_form.validate_on_submit():
-        flash(f"Account created successfully for {reg_form.username.data}", "Success")
-        return redirect(url_for("main"))
+        hashed_password = bcrypt.generate_password_hash(reg_form.password.data).decode(
+            "utf-8"
+        )
+        user = User(
+            username=reg_form.username.data,
+            email=reg_form.email.data,
+            password=hashed_password,
+        )
+        db.session.add(user)
+        db.session.commit()
+        flash(f"Account created successfully !", "Success")
+        return redirect(url_for("login"))
     return render_template("register.html", title="Register", form=reg_form)
 
 
@@ -42,11 +55,29 @@ def register():
 def login():
     login_form = LoginForm()
     if login_form.validate_on_submit():
-        flash(f"Account logged in successfully !", "Success")
-        return redirect(url_for("main"))
+        user = User.query.filter_by(email=login_form.email.data).first()
+        if user and bcrypt.check_password_hash(user.password, login_form.password.data):
+            login_user(user, remember=login_form.remember_me.data)
+            next_page = request.args.get("next")
+            return redirect(next_page) if next_page else redirect(url_for("main"))
+        else:
+            flash("Invalid credentials! Please try again.", "Error")
+            return render_template("login.html", title="Login", form=login_form)
     return render_template("login.html", title="Login", form=login_form)
 
 
 @app.route("/forgot-password")
 def forgot_password():
     return render_template("forgot_password.html")
+
+
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for("main"))
+
+
+@app.route("/profile")
+@login_required
+def profile():
+    return render_template("profile.html", title="Profile")
