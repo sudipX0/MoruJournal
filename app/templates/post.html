@@ -1,7 +1,6 @@
 {% extends "layouts.html" %}
 {% block content %}
 <div class="max-w-4xl mx-auto p-6 space-y-6 bg-gray-100 min-h-screen">
-  {% for post in posts %}
   <article class="bg-white shadow-md rounded-lg p-4 flex items-center space-x-4">
     <!-- Author Image -->
     <div class="flex-shrink-0">
@@ -17,12 +16,31 @@
         <div class="flex items-center space-x-2">
           <a href="#" class="text-gray-800 font-medium hover:underline">{{ post.author.username }}</a>
           <span class="text-sm text-gray-500">· {{ post.date_posted.strftime('%Y-%m-%d') }}</span>
+          {% if post.author == current_user %}
+          <div class="flex items-center space-x-2">
+              <!-- Update Button -->
+              <a href="{{ url_for('update_post', post_id=post.post_id) }}" 
+                 class="bg-gray-500 text-white px-3 py-1 text-sm rounded hover:bg-gray-600 transition">
+                  Update
+              </a>
+          
+              <!-- Delete Button -->
+              <form action="{{ url_for('delete_post', post_id=post.post_id) }}" method="POST">
+                  <button type="submit" 
+                          class="bg-red-500 text-white px-3 py-1 text-sm rounded hover:bg-red-600 transition">
+                      Delete
+                  </button>
+              </form>
+          </div>
+          {% endif %}
+          
+          
         </div>
       </div>
 
       <!-- Post Title -->
       <h2 class="mt-2 text-lg font-semibold text-blue-600 hover:text-gray-800">
-        <a href="{{ url_for('post', post_id=post.post_id)}}" class="hover:underline">{{ post.title }}</a>
+        {{ post.title }}
       </h2>
 
       <!-- Post Content -->
@@ -31,6 +49,5 @@
       </p>
     </div>
   </article>
-  {% endfor %}
 </div>
 {% endblock content %}
