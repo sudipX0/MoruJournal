@@ -18,14 +18,12 @@ class User(db.Model, UserMixin):
     posts = db.relationship("Post", backref="author", lazy=True)
 
     def get_reset_token(self):
-        # Convert SECRET_KEY to bytes
         secret_key = app.config["SECRET_KEY"].encode("utf-8")
         serializer = Serializer(secret_key)
         return serializer.dumps({"user_id": self.id}, salt="reset-salt")
 
     @staticmethod
     def verify_reset_token(token):
-        # Convert SECRET_KEY to bytes
         secret_key = app.config["SECRET_KEY"].encode("utf-8")
         serializer = Serializer(secret_key)
         try:

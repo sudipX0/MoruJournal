@@ -1,10 +1,8 @@
 {% extends "layouts.html" %}
 {% block content %}
 <div class="max-w-3xl mx-auto p-6 bg-gray-100 min-h-screen">
-  <!-- Blog Title -->
   <h1 class="text-4xl font-bold text-gray-800 text-center mb-4">{{ post.title }}</h1>
 
-  <!-- Author and Date -->
   <div class="flex items-center justify-center space-x-4 text-gray-600 text-sm mb-6">
     <img src="{{ url_for('static', filename='images/' + post.author.image_file) }}" 
          alt="Author Image" 
@@ -15,21 +13,16 @@
     </div>
   </div>
 
-  <!-- Blog Content -->
   <div class="bg-white shadow-md rounded-lg p-8 text-gray-800 leading-relaxed text-lg space-y-4">
     <p>{{ post.content }}</p>
   </div>
-
-  <!-- Edit and Delete Buttons (Visible for Author Only) -->
   {% if post.author == current_user %}
   <div class="mt-6 flex justify-end space-x-4">
-    <!-- Update Button -->
     <a href="{{ url_for('update_post', post_id=post.post_id) }}" 
        class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
       Update
     </a>
 
-    <!-- Delete Button -->
     <form action="{{ url_for('delete_post', post_id=post.post_id) }}" method="POST">
       <button type="submit" 
               class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">

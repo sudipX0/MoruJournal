@@ -186,10 +186,8 @@ def my_blogs():
 
 @app.route("/user/<string:username>")
 def user_blogs(username):
-    # Query the user by username
     user = User.query.filter_by(username=username).first_or_404()
 
-    # Fetch all posts by this user
     page = request.args.get("page", 1, type=int)
     posts = (
         Post.query.filter_by(author=user)
@@ -200,7 +198,6 @@ def user_blogs(username):
     return render_template("user_blogs.html", posts=posts, user=user)
 
 
-# Commented out the email sending part for local testing
 # def send_reset_email(user):
 #     token = user.get_reset_token()
 #     msg = Message(
@@ -222,8 +219,6 @@ def reset_request():
     form = RequestResetForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-
-        # For local testing, just render success message without email
         flash(
             "An email has been sent with instructions to reset your password.",
             "Success",
@@ -243,11 +238,13 @@ def reset_token(token):
         return redirect(url_for("reset_request"))
     form = ResetPasswordForm()
     if form.validate_on_submit():
-        # Update password logic (just for testing, don't hash here for now)
-        hashed_password = form.password.data  # For testing purposes, skip hashing
+        hashed_password = form.password.data
         user.password = hashed_password
         db.session.commit()
         flash(f"Password Updated successfully !", "Success")
         return redirect(url_for("login"))
 
     return render_template("reset_token.html", title="Reset Password", form=form)
+
+
+# Password Reset Functionality isn't implemented yet.

@@ -2,31 +2,25 @@
 {% block content %}
 <div class="max-w-4xl mx-auto p-6 bg-gray-100 min-h-screen">
 
-  <!-- User Blogs Heading -->
   <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Blogs by {{ user.username }}</h1>
 
-  <!-- Blog Posts -->
   {% if posts.items %}
   <div class="space-y-6">
     {% for post in posts.items %}
     <article class="bg-white shadow-md rounded-lg p-4">
-      <!-- Post Title -->
       <h2 class="text-xl font-semibold text-blue-600 hover:text-gray-800">
         <a href="{{ url_for('post', post_id=post.post_id) }}" class="hover:underline">{{ post.title }}</a>
       </h2>
 
-      <!-- Post Details -->
       <div class="text-gray-600 text-sm flex items-center justify-between mt-2">
         <span>Published on {{ post.date_posted.strftime('%B %d, %Y') }}</span>
       </div>
 
-      <!-- Post Excerpt -->
       <p class="mt-3 text-gray-700 text-sm line-clamp-3">{{ post.content }}</p>
     </article>
     {% endfor %}
   </div>
 
-  <!-- Pagination -->
   <div class="mt-6 flex justify-center">
     {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=1) %}
         {% if page_num %}

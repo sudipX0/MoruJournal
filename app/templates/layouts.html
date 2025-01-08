@@ -16,8 +16,7 @@
     <header class="bg-gray-800 text-white">
       <nav class="container mx-auto flex justify-between items-center py-4 px-6">
         <div class="flex items-center space-x-4">
-          <!-- Icon Added -->
-          <i class="fas fa-book text-xl text-white"></i> <!-- This is the icon -->
+          <i class="fas fa-book text-xl text-white"></i> 
           <a href="/" class="text-xl font-bold">Moru Journal</a>
           <a href="{{ url_for('main') }}" class="text-white hover:text-gray-300 mr-6">Home</a>
           <a href="{{ url_for('about') }}" class="text-white hover:text-gray-300">About</a>
@@ -39,7 +38,6 @@
 
     <main class="container mx-auto mt-12 px-6">
       <div class="flex flex-wrap justify-center">
-        <!-- Main Content -->
         <div class="w-full px-6">
           {% with messages = get_flashed_messages(with_categories=true) %}
           {% for category, message in messages %}

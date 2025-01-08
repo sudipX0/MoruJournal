@@ -1,27 +1,19 @@
 {% extends "layouts.html" %}
 {% block content %}
 <div class="max-w-7xl mx-auto p-6 space-y-6 bg-gradient-to-r from-purple-300 via-indigo-300 to-blue-300 min-h-screen">
-
-  <!-- Recent Blogs Heading -->
   <h1 class="text-4xl font-bold text-gray-900 mb-6 text-center">Recent Blogs</h1>
 
-  <!-- Blog Posts Container -->
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
     {% for post in posts.items %}
     <article class="bg-white shadow-md rounded-lg p-6 flex flex-col space-y-4 hover:shadow-xl transition-shadow duration-300">
-      <!-- Author Image -->
       <div class="flex-shrink-0 flex justify-center">
         <img src="{{ url_for('static', filename='images/' + post.author.image_file) }}" 
              alt="Author Image" 
              class="w-16 h-16 rounded-full border-4 border-blue-400">
       </div>
-
-      <!-- Post Details -->
       <div class="flex-1">
-        <!-- Author and Date -->
         <div class="flex items-center justify-between">
           <div class="flex items-center space-x-2">
-            <!-- Link to user-specific blog page -->
             {% if post.author == current_user %}
             <a href="{{ url_for('my_blogs') }}" 
                class="text-blue-500 font-medium hover:underline">
@@ -36,15 +28,12 @@
             <span class="text-sm text-gray-500">· {{ post.date_posted.strftime('%Y-%m-%d') }}</span>
           </div>
         </div>
-
-        <!-- Post Title -->
         <h2 class="mt-4 text-xl font-semibold text-gray-800 hover:text-blue-600">
           <a href="{{ url_for('post', post_id=post.post_id)}}" class="hover:underline">
             {{ post.title }}
           </a>
         </h2>
 
-        <!-- Post Content -->
         <p class="mt-2 text-gray-700 text-sm leading-relaxed line-clamp-3">
           {{ post.content }}
         </p>
@@ -53,7 +42,6 @@
     {% endfor %}
   </div>
 
-  <!-- Pagination -->
   <div class="mt-8 flex justify-center">
     {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=1) %}
         {% if page_num %}
