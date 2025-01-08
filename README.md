@@ -1,5 +1,11 @@
 # MoruJournal
 Moru Journal is a blogging platform that lets users create, manage, and share their blog posts with ease.
+<br>
+<div style="display: flex; justify-content: space-around;">
+  <img src="app/static/images/1.png" alt="Image 1" width="200" />
+  <img src="app/static/images/2.png" alt="Image 2" width="200" />
+  <img src="app/static/images/3.png" alt="Image 3" width="200" />
+</div>
 
 ## Setup Instructions
 ### 1. Clone this repository
