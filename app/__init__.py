@@ -5,6 +5,7 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_migrate import Migrate
+from seed import seed
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -17,6 +18,8 @@ mail = Mail(app)
 
 
 migrate = Migrate(app, db)
+with app.app_context():
+    seed()
 
 
 from app import routes
