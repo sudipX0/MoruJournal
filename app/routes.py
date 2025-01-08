@@ -63,6 +63,7 @@ def forgot_password():
 @app.route("/logout")
 def logout():
     logout_user()
+    flash("Logged Out Successfully !", "Success")
     return redirect(url_for("main"))
 
 
@@ -161,3 +162,31 @@ def delete_post(post_id):
     db.session.commit()
     flash("Post Deleted!", "Success")
     return redirect(url_for("main"))
+
+
+@app.route("/my_blogs")
+@login_required
+def my_blogs():
+    # Fetch all blogs created by the current user
+    posts = (
+        Post.query.filter_by(author=current_user)
+        .order_by(Post.date_posted.desc())
+        .all()
+    )
+    return render_template("my_blogs.html", posts=posts)
+
+
+@app.route("/user/<string:username>")
+def user_blogs(username):
+    # Query the user by username
+    user = User.query.filter_by(username=username).first_or_404()
+
+    # Fetch all posts by this user
+    page = request.args.get("page", 1, type=int)
+    posts = (
+        Post.query.filter_by(author=user)
+        .order_by(Post.date_posted.desc())
+        .paginate(page=page, per_page=5)
+    )
+
+    return render_template("user_blogs.html", posts=posts, user=user)

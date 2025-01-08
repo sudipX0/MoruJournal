@@ -1,6 +1,11 @@
 {% extends "layouts.html" %}
 {% block content %}
 <div class="max-w-4xl mx-auto p-6 space-y-6 bg-gray-100 min-h-screen">
+
+  <!-- Recent Blogs Heading -->
+  <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Recent Blogs</h1>
+
+  <!-- Blog Posts -->
   {% for post in posts.items %}
   <article class="bg-white shadow-md rounded-lg p-4 flex items-center space-x-4">
     <!-- Author Image -->
@@ -15,14 +20,27 @@
       <!-- Author and Date -->
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-2">
-          <a href="#" class="text-gray-800 font-medium hover:underline">{{ post.author.username }}</a>
+          <!-- Link to user-specific blog page -->
+          {% if post.author == current_user %}
+          <a href="{{ url_for('my_blogs') }}" 
+             class="text-gray-800 font-medium hover:underline">
+             {{ post.author.username }}
+          </a>
+          {% else %}
+          <a href="{{ url_for('user_blogs', username=post.author.username) }}" 
+             class="text-gray-800 font-medium hover:underline">
+             {{ post.author.username }}
+          </a>
+          {% endif %}
           <span class="text-sm text-gray-500">· {{ post.date_posted.strftime('%Y-%m-%d') }}</span>
         </div>
       </div>
 
       <!-- Post Title -->
       <h2 class="mt-2 text-lg font-semibold text-blue-600 hover:text-gray-800">
-        <a href="{{ url_for('post', post_id=post.post_id)}}" class="hover:underline">{{ post.title }}</a>
+        <a href="{{ url_for('post', post_id=post.post_id)}}" class="hover:underline">
+          {{ post.title }}
+        </a>
       </h2>
 
       <!-- Post Content -->
