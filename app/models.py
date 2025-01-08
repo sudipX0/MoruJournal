@@ -1,6 +1,7 @@
-from app import db, login_mgr, bcrypt
+from app import db, login_mgr, bcrypt, app
 from datetime import datetime
 from flask_login import UserMixin
+from itsdangerous import URLSafeTimedSerializer as Serializer
 
 
 @login_mgr.user_loader
@@ -16,8 +17,23 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(60), nullable=False)
     posts = db.relationship("Post", backref="author", lazy=True)
 
-    def __repr__(self):
-        return f"Username: {self.username}\nEmail: {self.email}\nProfile Picture: {self.image_file}"
+    def get_reset_token(self):
+        # Convert SECRET_KEY to bytes
+        secret_key = app.config["SECRET_KEY"].encode("utf-8")
+        serializer = Serializer(secret_key)
+        return serializer.dumps({"user_id": self.id}, salt="reset-salt")
+
+    @staticmethod
+    def verify_reset_token(token):
+        # Convert SECRET_KEY to bytes
+        secret_key = app.config["SECRET_KEY"].encode("utf-8")
+        serializer = Serializer(secret_key)
+        try:
+            user_id = serializer.loads(token, salt="reset-salt")["user_id"]
+        except Exception as e:
+            print(f"Error verifying token: {e}")
+            return None
+        return User.query.get(user_id)
 
 
 class Post(db.Model):

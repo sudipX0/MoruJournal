@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css')}}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     {% if title %}
     <title>Moru Journal - {{ title }}</title>
     {% else %}
@@ -15,6 +16,8 @@
     <header class="bg-gray-800 text-white">
       <nav class="container mx-auto flex justify-between items-center py-4 px-6">
         <div class="flex items-center space-x-4">
+          <!-- Icon Added -->
+          <i class="fas fa-book text-xl text-white"></i> <!-- This is the icon -->
           <a href="/" class="text-xl font-bold">Moru Journal</a>
           <a href="{{ url_for('main') }}" class="text-white hover:text-gray-300 mr-6">Home</a>
           <a href="{{ url_for('about') }}" class="text-white hover:text-gray-300">About</a>
